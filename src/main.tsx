@@ -3,6 +3,7 @@ import './index.css'
 import App from './App.tsx'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import "leaflet/dist/leaflet.css";
+import "./lib/leafletMarkerFix";
 import { PlacesUIProvider } from './context/PlacesUIContext.tsx';
 
 // Create a client
