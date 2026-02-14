@@ -2,6 +2,7 @@ import { useDeletePlace, useSavedPlaces } from "@/hooks/useSavedPlaces";
 import { usePlacesUI } from "@/context/PlacesUIContext";
 import { Card } from "./ui/card";
 import { Button } from "./ui/button";
+import { Map, MapPin, MapPinMinusInside, MapPinned, MapPinOff } from "lucide-react";
 
 export function SavedPlacesList() {
   const { data: places = [], isLoading } = useSavedPlaces();
@@ -18,8 +19,9 @@ export function SavedPlacesList() {
     <div className="flex flex-col gap-2">
       {places.map((p) => (
         <Card key={p.id} className="p-3">
-          <div className="text-sm font-medium">{p.name}</div>
-          <div className="text-xs opacity-70">
+          <div className="text-sm font-medium flex items-center gap-2"><MapPin size={30}/>{p.name}</div>
+          <div className="text-xs opacity-70 flex items-center gap-2">
+            <Map/>
             {p.position[0].toFixed(6)}, {p.position[1].toFixed(6)}
           </div>
 
@@ -30,7 +32,8 @@ export function SavedPlacesList() {
               variant="outline"
               onClick={() => selectPosition(p.position, p.name)}
             >
-              Ver no mapa
+              Ver no mapa 
+              <MapPinned/>
             </Button>
 
             <Button
@@ -41,6 +44,7 @@ export function SavedPlacesList() {
               disabled={del.isPending}
             >
               Remover
+              <MapPinOff/>
             </Button>
           </div>
         </Card>

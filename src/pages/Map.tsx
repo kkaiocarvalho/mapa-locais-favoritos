@@ -26,13 +26,13 @@ export default function MapPage() {
             </TabsTrigger>
           </TabsList>
 
-          <TabsContent className="mt-4 flex flex-col gap-4" value="searchPlaces">
+          <TabsContent className="mt-4 flex flex-col gap-4 " value="searchPlaces">
             <SearchPlaces
               value={searchText}
               onChange={setSearchText}
               onSubmit={() => setSubmitted(searchText)}
             />
-
+            <SavePlace />
             <ListPlaces
               placeName={submitted}
               onPick={(place) => {
@@ -40,7 +40,6 @@ export default function MapPage() {
               }}
             />
 
-            <SavePlace />
           </TabsContent>
               
           <TabsContent className="mt-4" value="savePlaces">

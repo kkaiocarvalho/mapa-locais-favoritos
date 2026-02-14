@@ -18,7 +18,7 @@ export function SearchPlaces({
         value={value}
         onChange={(e) => onChange(e.target.value)}
       />
-      <Button onClick={onSubmit}>
+      <Button onClick={onSubmit} className="bg-green-700 hover:bg-green-600">
         <Search />
       </Button>
     </div>
