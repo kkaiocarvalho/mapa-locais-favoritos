@@ -1,7 +1,7 @@
 import type { PlaceResult } from "@/types";
 import { useQuery } from "@tanstack/react-query";
 import { fetchPlaces } from "@/service/api";
-import { Map, MapPin } from "lucide-react";
+import { Map } from "lucide-react";
 
 export function ListPlaces({
   placeName,
