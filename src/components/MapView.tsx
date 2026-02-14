@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { MapContainer, Marker, Popup, TileLayer, useMap, useMapEvents } from "react-leaflet";
 import { usePlacesUI } from "@/context/PlacesUIContext";
+import { useSavedPlaces } from "@/hooks/useSavedPlaces";
 
 type LatLngTuple = [number, number];
 
@@ -29,7 +30,8 @@ function Recenter({ selected, zoom = 15 }: { selected: LatLngTuple | null; zoom?
 
 export default function MapView() {
   const center: LatLngTuple = [-18.9167, -48.2833];
-  const { selected } = usePlacesUI();
+  const { selected, selectPosition } = usePlacesUI();
+  const { data: savedPlaces = [] } = useSavedPlaces();
 
   return (
     <div className="h-full w-full">
@@ -42,15 +44,27 @@ export default function MapView() {
         <ClickHandler />
         <Recenter selected={selected} zoom={15} />
 
-        {selected && (
-          <Marker position={selected}>
-            <Popup>
-              Lat: {selected[0].toFixed(6)}
-              <br />
-              Lng: {selected[1].toFixed(6)}
-            </Popup>
-          </Marker>
-        )}
+       {savedPlaces.map((p) => (
+        <Marker
+          key={p.id}
+          position={p.position}
+          eventHandlers={{
+            click: () => selectPosition(p.position, p.name),
+          }}
+        >
+          <Popup>
+            <strong>{p.name}</strong>
+            <br />
+            {p.position[0].toFixed(6)}, {p.position[1].toFixed(6)}
+          </Popup>
+        </Marker>
+      ))}
+
+      {selected && (
+        <Marker position={selected}>
+          <Popup>Local selecionado</Popup>
+        </Marker>
+      )}
       </MapContainer>
     </div>
   );

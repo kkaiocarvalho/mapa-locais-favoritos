@@ -1,8 +1,20 @@
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+﻿import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { readPlaces, writePlaces, type SavedPlace } from "@/storage/placesStorage";
 import type { LatLngTuple } from "@/context/PlacesUIContext";
 
 const KEY = ["places", "saved"] as const;
+const COORD_PRECISION = 6;
+
+function normalizeName(name: string) {
+  return name.trim().toLowerCase();
+}
+
+function samePosition(a: LatLngTuple, b: LatLngTuple) {
+  return (
+    a[0].toFixed(COORD_PRECISION) === b[0].toFixed(COORD_PRECISION) &&
+    a[1].toFixed(COORD_PRECISION) === b[1].toFixed(COORD_PRECISION)
+  );
+}
 
 export function useSavedPlaces() {
   return useQuery({
@@ -18,9 +30,24 @@ export function useSavePlace() {
   return useMutation({
     mutationFn: async (data: { name: string; position: LatLngTuple }) => {
       const name = data.name.trim();
-      if (!name) throw new Error("Nome obrigatório");
+      if (!name) throw new Error("Nome obrigatorio");
 
       const current = readPlaces();
+
+      const duplicateByName = current.some(
+        (p) => normalizeName(p.name) === normalizeName(name)
+      );
+      if (duplicateByName) {
+        throw new Error("Ja existe um local salvo com esse nome");
+      }
+
+      const duplicateByPosition = current.some((p) =>
+        samePosition(p.position, data.position)
+      );
+      if (duplicateByPosition) {
+        throw new Error("Esse local ja esta salvo");
+      }
+
       const newPlace: SavedPlace = {
         id: crypto.randomUUID(),
         name,
