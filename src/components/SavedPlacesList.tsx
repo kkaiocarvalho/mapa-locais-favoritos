@@ -2,7 +2,7 @@ import { useDeletePlace, useSavedPlaces } from "@/hooks/useSavedPlaces";
 import { usePlacesUI } from "@/context/PlacesUIContext";
 import { Card } from "./ui/card";
 import { Button } from "./ui/button";
-import { Map, MapPin, MapPinMinusInside, MapPinned, MapPinOff } from "lucide-react";
+import { Map, MapPin, MapPinned, MapPinOff } from "lucide-react";
 
 export function SavedPlacesList() {
   const { data: places = [], isLoading } = useSavedPlaces();
